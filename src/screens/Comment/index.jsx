@@ -1,49 +1,16 @@
-import React, { useMemo, useState } from "react";
-// import CommentEdit from "../../components/CommentEdit";
+import React from "react";
 import "./styles.css";
 import CommentEdit from "../../components/CommentEdit";
 import { useToggle } from "../../hooks/useToggle";
 import CommentLive from "../../components/CommentLive";
 import { sortByTime } from "../../utils/sortByTime.utils";
 import { deepCopyObject } from "../../utils/deepCopyObject.utils";
+import useComments from "../../hooks/useComments";
 
 const Comment = () => {
   const [sort, toggleSort] = useToggle(false);
 
-  // COMMENT SCHEMA
-  // name,comment,commentTime,replies,isEdited
-  const [comments, setComments] = useState([
-    {
-      name: "Sourabh Gupta",
-      comment: "Hey beautiful",
-      commentTime: 1711173435455,
-      replies: [
-        {
-          name: "Sourabh Gupta reply",
-          comment: "Hey beautiful reply",
-          commentTime: 151917235455,
-        },
-      ],
-    },
-    {
-      name: "Sourabh Gupta2",
-      comment: "Hey beautiful",
-      commentTime: 151217235455,
-      replies: [
-        {
-          name: "Sourabh Gupta2 reply",
-          comment: "Hey beautiful reply",
-          commentTime: 151917235455,
-        },
-        {
-          name: "Sourabh Gupta2 reply 2",
-          comment: "Hey beautiful reply 2",
-          commentTime: 151917235455,
-        },
-      ],
-      isEdited: true,
-    },
-  ]);
+  const [comments, setComments] = useComments();
 
   const addNewComment = (comment) => {
     setComments((comments) => [...comments, comment]);
@@ -73,7 +40,6 @@ const Comment = () => {
 
   const deleteReply = (commentIndex, replyIndex) => {
     setComments((prevComments) => {
-      // const updatedComments = JSON.parse(JSON.stringify(prevComments));
       const updatedComments = deepCopyObject(prevComments);
       const commentToUpdate = { ...updatedComments[commentIndex] };
       commentToUpdate.replies.splice(replyIndex, 1);

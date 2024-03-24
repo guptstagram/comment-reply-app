@@ -36,7 +36,8 @@ const CommentLive = ({
     if (deleteComment) {
       deleteComment(index);
     }
-    if (deleteReply) deleteReply(parentIndex, index);
+    if (deleteReply && (parentIndex || parentIndex === 0))
+      deleteReply(parentIndex, index);
   };
 
   return (
