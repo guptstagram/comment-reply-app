@@ -4,6 +4,7 @@ export const COMMENT_BOX_LABELS = {
   COMMENT: "Comment",
   REPLY: "Reply",
   EDIT: "Edit",
+  DONE: "Done",
   POST: "POST",
   EDITED: "(Edited)",
 };

@@ -13,39 +13,50 @@ const Comment = () => {
   const [comments, setComments] = useComments();
 
   const addNewComment = (comment) => {
-    setComments((comments) => [...comments, comment]);
+    const updatedComments = [...comments, comment];
+    setComments(updatedComments);
   };
 
   const addNewReply = (reply, commentIndex) => {
-    setComments((prevComments) => {
-      const updatedComments = [...prevComments];
-      if (!updatedComments[commentIndex].replies) {
-        updatedComments[commentIndex].replies = [];
-      }
-      updatedComments[commentIndex] = {
-        ...updatedComments[commentIndex],
-        replies: [reply, ...updatedComments[commentIndex].replies],
-      };
-      return updatedComments;
-    });
+    const updatedComments = [...comments];
+    if (!updatedComments[commentIndex].replies) {
+      updatedComments[commentIndex].replies = [];
+    }
+    updatedComments[commentIndex] = {
+      ...updatedComments[commentIndex],
+      replies: [reply, ...updatedComments[commentIndex].replies],
+    };
+    setComments(updatedComments);
   };
 
   const deleteComment = (commentIndex) => {
-    setComments((comments) => {
-      const commentsCopy = [...comments];
-      commentsCopy.splice(commentIndex, 1);
-      return commentsCopy;
-    });
+    const updatedComments = [...comments];
+    updatedComments.splice(commentIndex, 1);
+    setComments(updatedComments);
   };
 
   const deleteReply = (commentIndex, replyIndex) => {
-    setComments((prevComments) => {
-      const updatedComments = deepCopyObject(prevComments);
-      const commentToUpdate = { ...updatedComments[commentIndex] };
-      commentToUpdate.replies.splice(replyIndex, 1);
-      updatedComments[commentIndex] = commentToUpdate;
-      return updatedComments;
-    });
+    const updatedComments = deepCopyObject(comments);
+    const commentToUpdate = { ...updatedComments[commentIndex] };
+    commentToUpdate.replies.splice(replyIndex, 1);
+    updatedComments[commentIndex] = commentToUpdate;
+    setComments(updatedComments);
+  };
+
+  const editComment = (commentIndex, comment) => {
+    const updatedComments = [...comments];
+    updatedComments[commentIndex].comment = comment;
+    updatedComments[commentIndex].isEdited = true;
+    setComments(updatedComments);
+  };
+
+  const editReply = (commentIndex, replyIndex, reply) => {
+    const updatedComments = deepCopyObject(comments);
+    const commentToUpdate = { ...updatedComments[commentIndex] };
+    commentToUpdate.replies[replyIndex].comment = reply;
+    commentToUpdate.replies[replyIndex].isEdited = true;
+    updatedComments[commentIndex] = commentToUpdate;
+    setComments(updatedComments);
   };
 
   const sortedComments = sortByTime(comments, sort);
@@ -71,6 +82,8 @@ const Comment = () => {
             addNewReply={addNewReply}
             deleteComment={deleteComment}
             deleteReply={deleteReply}
+            editComment={editComment}
+            editReply={editReply}
           />
         )
       )}

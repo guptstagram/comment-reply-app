@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { COMMENT_LOCAL_STORAGE_KEY } from "../constants/commentEnums.constants";
-import useDeepCompareEffect from "use-deep-compare-effect";
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+} from "../utils/storage.utils";
 
 const useComments = () => {
-  const persistedComments = JSON.parse(
-    localStorage.getItem(COMMENT_LOCAL_STORAGE_KEY)
-  );
+  const persistedComments = getLocalStorageItem(COMMENT_LOCAL_STORAGE_KEY);
 
-  // COMMENT SCHEMA
-  // name,comment,commentTime,replies,isEdited
-  const [comments, setComments] = useState([
+  const [comments, setCommentsFn] = useState([
     ...(Array.isArray(persistedComments) ? persistedComments : []),
   ]);
 
-  useDeepCompareEffect(() => {
-    localStorage.setItem(COMMENT_LOCAL_STORAGE_KEY, JSON.stringify(comments));
-  }, [comments]);
+  const setComments = (updatedComments) => {
+    setCommentsFn(updatedComments);
+    setLocalStorageItem(COMMENT_LOCAL_STORAGE_KEY, updatedComments);
+  };
 
   return [comments, setComments];
 };

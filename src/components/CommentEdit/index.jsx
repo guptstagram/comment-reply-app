@@ -9,7 +9,6 @@ const CommentEdit = ({
   index,
   label = COMMENT_BOX_LABELS.COMMENT,
   nested,
-  disableNameInput,
   addNewComment,
 }) => {
   const [inputVal, setInputVal] = useState("");
@@ -45,7 +44,6 @@ const CommentEdit = ({
         value={inputVal}
         onChange={handleInputChanged}
         placeholder={COMMENT_BOX_PLACEHOLDERS.NAME}
-        disabled={disableNameInput}
       />
       <textarea
         value={textAreaVal}

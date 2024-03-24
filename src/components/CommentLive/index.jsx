@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./styles.css";
-import { COMMENT_BOX_LABELS } from "../../constants/commentEnums.constants";
+import {
+  COMMENT_BOX_LABELS,
+  COMMENT_BOX_PLACEHOLDERS,
+} from "../../constants/commentEnums.constants";
 import { formatDate } from "../../utils/formatDate.utils";
 import CommentEdit from "../CommentEdit";
 import BinIcon from "../../icons/BinIcon";
@@ -17,15 +20,34 @@ const CommentLive = ({
   addNewReply,
   deleteComment,
   deleteReply,
+  editComment,
+  editReply,
   nested,
 }) => {
   const [showReplyInput, setShowReplyInput] = useState(false);
+  const [showEditComment, setShowEditComment] = useState(false);
+
+  const [textAreaVal, setTextAreaVal] = useState("");
+  const handleTextAreaChanged = (e) => {
+    setTextAreaVal(e.target.value);
+  };
 
   const handleReplyClicked = () => {
     setShowReplyInput(true);
   };
 
-  const handleEditClicked = () => {};
+  const handleEditClicked = () => {
+    setTextAreaVal(comment);
+    setShowEditComment(true);
+  };
+
+  const handleDoneClicked = () => {
+    setShowEditComment(false);
+    if (parentIndex || parentIndex === 0)
+      editReply(parentIndex, index, textAreaVal);
+    else editComment(index, textAreaVal);
+    setTextAreaVal("");
+  };
 
   const addReplyHandler = (reply, commentIndex) => {
     addNewReply(reply, commentIndex);
@@ -33,11 +55,8 @@ const CommentLive = ({
   };
 
   const deleteClicked = () => {
-    if (deleteComment) {
-      deleteComment(index);
-    }
-    if (deleteReply && (parentIndex || parentIndex === 0))
-      deleteReply(parentIndex, index);
+    if (parentIndex || parentIndex === 0) deleteReply(parentIndex, index);
+    else deleteComment(index);
   };
 
   return (
@@ -47,16 +66,28 @@ const CommentLive = ({
           <p>{name}</p>
           <p>{formatDate(commentTime)}</p>
         </div>
-        <p>
-          {comment}
-          {isEdited && <span>{` ${COMMENT_BOX_LABELS.EDITED}`}</span>}
-        </p>
+        {showEditComment ? (
+          <textarea
+            value={textAreaVal}
+            onChange={handleTextAreaChanged}
+            placeholder={COMMENT_BOX_PLACEHOLDERS.COMMENT}
+          />
+        ) : (
+          <p>
+            {comment}
+            {isEdited && <span>{` ${COMMENT_BOX_LABELS.EDITED}`}</span>}
+          </p>
+        )}
         <div className="delete" onClick={deleteClicked}>
           <BinIcon />
         </div>
         <div className="footer">
           {!hideReplyButton && <p onClick={handleReplyClicked}>Reply</p>}
-          <p onClick={handleEditClicked}>Edit</p>
+          {showEditComment ? (
+            <p onClick={handleDoneClicked}>{COMMENT_BOX_LABELS.DONE}</p>
+          ) : (
+            <p onClick={handleEditClicked}>{COMMENT_BOX_LABELS.EDIT}</p>
+          )}
         </div>
       </div>
       {showReplyInput && (
@@ -78,6 +109,7 @@ const CommentLive = ({
           isEdited={isEdited}
           hideReplyButton
           deleteReply={deleteReply}
+          editReply={editReply}
           nested
         />
       ))}
