@@ -1,5 +1,5 @@
-const App = () => {
-  return <h1>APP</h1>;
-};
+import Comment from "./screens/Comment";
+
+const App = () => <Comment />;
 
 export default App;
