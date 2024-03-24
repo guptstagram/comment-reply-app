@@ -1,0 +1,12 @@
+.comment-container {
+}
+
+.comment-container .sorter {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.comment-container .sorter p {
+  font-size: 12px;
+  cursor: pointer;
+}

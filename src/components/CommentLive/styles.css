@@ -1,0 +1,20 @@
+@import url("../../App.css");
+
+.comment-box.live .header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.comment-box.live .footer {
+  display: flex;
+  column-gap: 20px;
+}
+
+.comment-box.live .footer p {
+  color: blue;
+  cursor: pointer;
+}
+
+.comment-box.live p span {
+  opacity: 0.5;
+}

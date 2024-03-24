@@ -1,0 +1,14 @@
+@import url("../../App.css");
+
+.comment-box input,
+.comment-box textarea {
+  padding: 5px;
+}
+
+.comment-box button {
+  width: 100px;
+  height: 30px;
+  background-color: lightblue;
+  cursor: pointer;
+  align-self: flex-end;
+}
