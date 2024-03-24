@@ -5,6 +5,7 @@ import CommentEdit from "../../components/CommentEdit";
 import { useToggle } from "../../hooks/useToggle";
 import CommentLive from "../../components/CommentLive";
 import { sortByTime } from "../../utils/sortByTime.utils";
+import { deepCopyObject } from "../../utils/deepCopyObject.utils";
 
 const Comment = () => {
   const [sort, toggleSort] = useToggle(false);
@@ -14,21 +15,32 @@ const Comment = () => {
   const [comments, setComments] = useState([
     {
       name: "Sourabh Gupta",
-      comment: "Hey beautyiful",
+      comment: "Hey beautiful",
       commentTime: 1711173435455,
       replies: [
         {
           name: "Sourabh Gupta reply",
-          comment: "Hey beautyiful reply",
+          comment: "Hey beautiful reply",
           commentTime: 151917235455,
         },
       ],
     },
     {
       name: "Sourabh Gupta2",
-      comment: "Hey beautyiful",
+      comment: "Hey beautiful",
       commentTime: 151217235455,
-      replies: [],
+      replies: [
+        {
+          name: "Sourabh Gupta2 reply",
+          comment: "Hey beautiful reply",
+          commentTime: 151917235455,
+        },
+        {
+          name: "Sourabh Gupta2 reply 2",
+          comment: "Hey beautiful reply 2",
+          commentTime: 151917235455,
+        },
+      ],
       isEdited: true,
     },
   ]);
@@ -47,6 +59,25 @@ const Comment = () => {
         ...updatedComments[commentIndex],
         replies: [reply, ...updatedComments[commentIndex].replies],
       };
+      return updatedComments;
+    });
+  };
+
+  const deleteComment = (commentIndex) => {
+    setComments((comments) => {
+      const commentsCopy = [...comments];
+      commentsCopy.splice(commentIndex, 1);
+      return commentsCopy;
+    });
+  };
+
+  const deleteReply = (commentIndex, replyIndex) => {
+    setComments((prevComments) => {
+      // const updatedComments = JSON.parse(JSON.stringify(prevComments));
+      const updatedComments = deepCopyObject(prevComments);
+      const commentToUpdate = { ...updatedComments[commentIndex] };
+      commentToUpdate.replies.splice(replyIndex, 1);
+      updatedComments[commentIndex] = commentToUpdate;
       return updatedComments;
     });
   };
@@ -72,6 +103,8 @@ const Comment = () => {
             replies={replies}
             isEdited={isEdited}
             addNewReply={addNewReply}
+            deleteComment={deleteComment}
+            deleteReply={deleteReply}
           />
         )
       )}

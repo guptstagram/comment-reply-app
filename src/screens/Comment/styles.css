@@ -1,4 +1,5 @@
 .comment-container {
+  max-width: 600px;
 }
 
 .comment-container .sorter {

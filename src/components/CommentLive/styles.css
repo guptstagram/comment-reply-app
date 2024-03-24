@@ -5,6 +5,25 @@
   justify-content: space-between;
 }
 
+.comment-box.live .delete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  background-color: azure;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+.comment-box.live .delete img {
+  height: 20px;
+  width: 20px;
+}
+
 .comment-box.live .footer {
   display: flex;
   column-gap: 20px;

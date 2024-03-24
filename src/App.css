@@ -11,6 +11,7 @@
   background-color: grey;
   border: 1px solid;
   margin: 6px;
+  position: relative;
 }
 
 .comment-box.nested {

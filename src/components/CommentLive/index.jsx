@@ -3,9 +3,11 @@ import "./styles.css";
 import { COMMENT_BOX_LABELS } from "../../constants/commentEnums.constants";
 import { formatDate } from "../../utils/formatDate.utils";
 import CommentEdit from "../CommentEdit";
+import BinIcon from "../../icons/BinIcon";
 
 const CommentLive = ({
   name,
+  parentIndex,
   index,
   comment,
   commentTime,
@@ -13,6 +15,8 @@ const CommentLive = ({
   isEdited,
   hideReplyButton,
   addNewReply,
+  deleteComment,
+  deleteReply,
   nested,
 }) => {
   const [showReplyInput, setShowReplyInput] = useState(false);
@@ -28,6 +32,13 @@ const CommentLive = ({
     setShowReplyInput(false);
   };
 
+  const deleteClicked = () => {
+    if (deleteComment) {
+      deleteComment(index);
+    }
+    if (deleteReply) deleteReply(parentIndex, index);
+  };
+
   return (
     <>
       <div className={`comment-box live ${nested ? "nested" : ""}`}>
@@ -39,6 +50,9 @@ const CommentLive = ({
           {comment}
           {isEdited && <span>{` ${COMMENT_BOX_LABELS.EDITED}`}</span>}
         </p>
+        <div className="delete" onClick={deleteClicked}>
+          <BinIcon />
+        </div>
         <div className="footer">
           {!hideReplyButton && <p onClick={handleReplyClicked}>Reply</p>}
           <p onClick={handleEditClicked}>Edit</p>
@@ -52,14 +66,17 @@ const CommentLive = ({
           nested
         />
       )}
-      {replies.map(({ name, comment, commentTime, isEdited }, index) => (
+      {replies.map(({ name, comment, commentTime, isEdited }, currIndex) => (
         <CommentLive
-          key={index}
+          key={currIndex}
+          parentIndex={index}
+          index={currIndex}
           name={name}
           comment={comment}
           commentTime={commentTime}
           isEdited={isEdited}
           hideReplyButton
+          deleteReply={deleteReply}
           nested
         />
       ))}
